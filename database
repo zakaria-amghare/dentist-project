@@ -1,0 +1,53 @@
+create table doctor(
+    doctor_id int not null auto_increment,
+    name varchar(100) not null,
+    phone varchar(15),
+    email varchar(100),
+    primary key (doctor_id)
+) engine=InnoDB charset=utf8mb4;
+
+create table patient(
+    patient_id int not null auto_increment,
+    name varchar(100) not null,
+    phone varchar(15),
+    email varchar(100),
+    primary key (patient_id)
+) engine=InnoDB charset=utf8mb4;
+
+create table appointment(
+    appointment_id int not null auto_increment,
+    doctor_id int not null,
+    patient_id int not null,
+    appointment_date datetime not null,
+    status varchar(20) not null,
+    primary key (appointment_id),
+    foreign key (doctor_id) references doctor(doctor_id) on delete cascade,
+    foreign key (patient_id) references patient(patient_id) on delete cascade
+) engine=InnoDB charset=utf8mb4;
+
+create table prescription(
+    prescription_id int not null auto_increment,
+    appointment_id int not null,
+    medication varchar(255) not null,
+    dosage varchar(100) not null,
+    instructions text,
+    primary key (prescription_id),
+    foreign key (appointment_id) references appointment(appointment_id) on delete cascade
+) engine=InnoDB charset=utf8mb4;
+
+create table bill(
+    bill_id int not null auto_increment,
+    appointment_id int not null,
+    amount decimal(10, 2) not null,
+    payment_status varchar(20) not null,
+    primary key (bill_id),
+    foreign key (appointment_id) references appointment(appointment_id) on delete cascade
+) engine=InnoDB charset=utf8mb4;
+
+create table logs(
+    log_id int not null auto_increment,
+    action varchar(255) not null,
+    action_date datetime not null,
+    user_id int not null,
+    primary key (log_id)
+) engine=InnoDB charset=utf8mb4;
